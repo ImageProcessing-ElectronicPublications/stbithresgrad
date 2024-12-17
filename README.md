@@ -5,6 +5,22 @@ Used:
 * Gauss blur: [iir_gauss_blur](https://github.com/arkanis/iir_gauss_blur).
 * STB: [stb](https://github.com/nothings/stb).
 
+```
+    O = (I < T) ? BLACK : WHITE
+
+      T = B * k + TG * (1 - k) + delta
+
+        B = blur(I)
+
+        TG = sum(I * G) / sum(G)
+
+          G = |I - B|
+
+    bounds:
+            BLACK, if I < lower,
+            WHITE, if I > upper.
+```
+
 This filter was first applied in [STEX](https://github.com/ImageProcessing-ElectronicPublications/scantailor-experimental) (2024)
 in a single-component version (Y).
 
@@ -12,12 +28,18 @@ Here this filter is implemented in a full-color version.
 
 ## Usage
 
-`./stbithresgrad [-h] [-i] [-s sigma] [-k coeff] input-file output.png`
+`./stbithresgrad [-h] [-i] [-s sigma] [-k coeff] [-d delta] [-l lower] [-u upper] input-file output.png`
 
 `-s sigma`     The sigma of the gauss normal distribution (number >= 0.5).
                Larger values result in a stronger blur.
 
 `-k coeff`     The coefficient local threshold.
+
+`-d delta`     The regulator threshold.
+
+`-l lower`     The bound lower threshold.
+
+`-u upper`     The bound upper threshold.
 
 `-i`           Info to `stdout`.
 
